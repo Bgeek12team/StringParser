@@ -4,7 +4,7 @@ namespace StringParser
 {
     public enum ACTIONS
     {
-        PLUS, MINUS, MULTIPLY, DIVIDE, POW
+        PLUS, MINUS, MULTIPLY, DIVIDE, POW//потрогал библиотеку классов
     }
 
     public enum OPERATIONS
