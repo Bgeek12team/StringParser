@@ -12,6 +12,7 @@ namespace P
             cf += (x) => Math.Pow(x,2);
 
             //Хуйня, вырубай2
+            //Миша сапожник
 
             Console.WriteLine(cf.CalcAt(5));
         }
