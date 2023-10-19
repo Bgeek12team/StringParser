@@ -12,7 +12,9 @@ namespace StringParser
         {
 
             string n;
-            return "New";
+            n = "class pidorov";
+            return n;
+
         }
     }
 }
