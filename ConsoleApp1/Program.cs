@@ -13,5 +13,9 @@ namespace P
 
             Console.WriteLine(cf.CalcAt(5));
         }
+        public void getMark()
+        {
+            Console.WriteLine("Вы призвали Маркелова");
+        }
     }
 }
