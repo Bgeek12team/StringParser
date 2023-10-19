@@ -3,7 +3,7 @@
 namespace StringParser
 {
     /// <summary>
-    /// библиотека классов лехи
+    /// библиотека классов лехив
     /// </summary>
     public enum ACTIONS
     {
