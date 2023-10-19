@@ -10,6 +10,7 @@ namespace StringParser
     {
         public string New()
         {
+            string n;
             return "New";
         }
     }
