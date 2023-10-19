@@ -24,21 +24,6 @@ namespace StringParser
     public class StringParse
     {
         private string s;
-
-        Stack<ACTIONS> actionsStack;
-
-        public Stack<ACTIONS> ActionsStack
-        {
-            get { return actionsStack; }
-        }
-
-        Stack<string> operationsStack;
-
-        public Stack<string> OperationsStack
-        {
-            get { return operationsStack; }
-        }
-
         public StringParse(string s)
         {
             this.s = s.Trim().ToLower() ;
@@ -55,12 +40,6 @@ namespace StringParser
         }
         public void FillStacks()
         {
-            operationsStack = new();
-            actionsStack = new();
-
-            actionsStack.Push(ACTIONS.MULTIPLY);
-            operationsStack.Push("2");
-            operationsStack.Push("sin(cos(x) + tan(x))");
         }
 
 
@@ -174,12 +153,7 @@ namespace StringParser
 
         private void Parse()
         {
-            Stack<Operator> operators = new();
-            Stack<Function> functions = new();
-
-            Operator cur = new Operator(str);
-            operators.Push(cur);
-
+            StringParse sp = new StringParse(str);
 
 
         }
