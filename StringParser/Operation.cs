@@ -35,10 +35,16 @@ namespace StringParser
                     return (x) => Math.Sqrt(x);
                 case OPERATIONS.FACT:
                     return (x) => Fact(x);
+                case OPERATIONS.ZETA:
+                    return (x) => Zeta(x);
             }
             throw new Exception("компилятор иди нахуй");
         }
 
+        private static int Zeta(double x)
+        {
+
+        }
         private static int Fact(double x)
         {
             int res = 1;

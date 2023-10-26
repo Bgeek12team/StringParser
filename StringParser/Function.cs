@@ -86,7 +86,7 @@ namespace StringParser
                     return left.CalcAt(x) + rigth.CalcAt(x);
 
                 case ACTIONS.MINUS:
-                    return left.CalcAt(x) + rigth.CalcAt(x);
+                    return left.CalcAt(x) - rigth.CalcAt(x);
 
                 case ACTIONS.MULTIPLY:
                     return left.CalcAt(x) * rigth.CalcAt(x);

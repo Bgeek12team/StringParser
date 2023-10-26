@@ -1,5 +1,5 @@
 ﻿using System.Text;
-
+using StringParser;
 namespace form
 {
     public partial class Form1 : Form
@@ -92,7 +92,8 @@ namespace form
 
         private void buttonRes_Click(object sender, EventArgs e)
         {
-            
+            Performer performer = new(txBxInput.Text);
+
         }
 
         private void txBxInput_TextChanged(object sender, EventArgs e)

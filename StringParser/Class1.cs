@@ -2,6 +2,9 @@
 
 namespace StringParser
 {
+
+    
+
     public enum ACTIONS
     {
         PLUS, MINUS, MULTIPLY, DIVIDE, POW
@@ -10,7 +13,7 @@ namespace StringParser
     public enum OPERATIONS
     {
         SIN, COS, TAN, COT, EXP, LOG,
-        SQRT, FACT
+        SQRT, FACT, ZETA
     }
     
     public enum FUNCTIONTYPE
@@ -138,26 +141,4 @@ namespace StringParser
         }
     }
 
-    public class Performer
-    {
-        private string str;
-        private Func<double, double> resFunction;
-        public Performer(string str)
-        {
-            this.str = str;
-            Parse();
-        }
-
-        private void Parse()
-        {
-            StringParse sp = new StringParse(str);
-
-
-        }
-
-        public double Perform(double x)
-        {
-            return resFunction.Invoke(x);
-        }
-    }
 }
