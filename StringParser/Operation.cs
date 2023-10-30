@@ -43,7 +43,7 @@ namespace StringParser
 
         private static int Zeta(double x)
         {
-
+            return 1;
         }
         private static int Fact(double x)
         {

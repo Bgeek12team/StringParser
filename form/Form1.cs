@@ -5,10 +5,12 @@ namespace form
     public partial class Form1 : Form
     {
         private int maxSymbols;
+        private (int x, int y) normalSize = (310, 400);
         public Form1()
         {
             InitializeComponent();
             maxSymbols = 16;
+            Size = new Size(normalSize.x, normalSize.y);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -72,7 +74,7 @@ namespace form
 
         private void buttonDeg_Click(object sender, EventArgs e)
         {
-            txBxInput.Text += " √( ";
+            txBxInput.Text += " sqrt( ";
         }
 
         private void buttonRoot_Click(object sender, EventArgs e)
@@ -98,14 +100,14 @@ namespace form
 
         private void txBxInput_TextChanged(object sender, EventArgs e)
         {
-            autoScaleUp();
-            autoScaleDown(15);
+
         }
 
         private void buttonDiff_Click(object sender, EventArgs e)
         {
             txBxInput.Text += " - ";
         }
+        /*
         /// <summary>
         /// Метод, позволяющий увеличивать текстовое поле в зависимости от размера входной строки
         /// </summary>
@@ -129,20 +131,12 @@ namespace form
                 txBxInput.Size = new Size(txBxInput.Width - zoomScale, txBxInput.Height);
                 maxSymbols -= 1;
             }
-        }
+        }*/
         private void buttonDel_Click(object sender, EventArgs e)
         {
-            int zoomScale = 15;
             if (txBxInput.Text[txBxInput.Text.Length - 1] == ' ')
-            {
                 txBxInput.Text = txBxInput.Text[..^1];
-                zoomScale += 15;
-                maxSymbols -= 1;
-            }
-            autoScaleDown(zoomScale);
             txBxInput.Text = txBxInput.Text[..^1];
-            
-
         }
 
         private void buttonGraph_Click(object sender, EventArgs e)
@@ -151,14 +145,30 @@ namespace form
             buttonGraph.Enabled = false;
             txBxInput.Left += label1.Width;
             label1.Visible = true;
+            button11.Visible = true;
+            button10.Visible = true;
+            Size = new Size(normalSize.x + 390, normalSize.y);
         }
 
         private void buttonCalc_Click(object sender, EventArgs e)
         {
             buttonCalc.Enabled = false;
             buttonGraph.Enabled = true;
+            button11.Visible = false;
+            button10.Visible = false;
             txBxInput.Left -= label1.Width;
             label1.Visible = false;
+            Size = new Size(normalSize.x, normalSize.y);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            txBxInput.Text += "x";
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            txBxInput.Text += ")dx";
         }
     }
 }
