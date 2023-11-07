@@ -54,6 +54,11 @@ namespace StringParser
                     lastToken = i;
                 }
             }
+            string rem = str.Substring(lastToken);
+            if (TryParseToken(rem, out Token token2))
+            {
+                tokens.Add(token2);
+            }
 
             for (int i = 0; i < tokens.Count; i++)
             {
