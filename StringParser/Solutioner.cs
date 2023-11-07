@@ -10,17 +10,27 @@ namespace StringParser
     {
         private ExtentedToken _function;
 
-        private string _handlingString;
+        private ExtentedToken[] _tokens;
 
         public Performer(string s)
         {
-            _handlingString = s;
+            _tokens = ExtentedToken.ToExtentedTokenArr(s);
+        }
+
+        public Performer(IEnumerable<ExtentedToken> tokens)
+        {
+            this._tokens = tokens.ToArray();
+        }
+
+        public Performer(ExtentedToken token)
+        {
+            _function = token;
+            _tokens = new ExtentedToken[] {token};
         }
 
         public void Parse()
         {
-            ExtentedToken[] infixTokens = ExtentedToken.ToExtentedTokenArr(_handlingString);
-            ExtentedToken[] postfixTokens = ConvertToPostfix(infixTokens);
+            ExtentedToken[] postfixTokens = ConvertToPostfix(_tokens);
             ExtractDelegate(postfixTokens);
         }
 

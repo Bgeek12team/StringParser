@@ -7,15 +7,14 @@ namespace P
     {
         static void Main()
         {
-            string str = " sin(cos(x)) - 5 * (-2/7 + 1)";
-
-            Performer performer = new(str);
-            performer.Parse();
+            string str = " 5 * sin(cos(x))";
 
             const double x = 0;
-            double res = performer.CalcAt(x);
 
-            Console.WriteLine(res);
+            ExtentedToken inner = ExtentedToken.ConvertFromExpression(str);
+            ExtentedToken outer = ExtentedToken.ConvertFromExpression("ln(x)");
+            var extentedToken = ExtentedToken.Merge(inner, outer);
+            Console.WriteLine(extentedToken.Val(x));
             
         }
     }

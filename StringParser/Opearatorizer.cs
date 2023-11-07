@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,16 +68,35 @@ namespace StringParser
             _stringVal = token.TokenString;
             _priority = balance;
         }
-        public static ExtentedToken[] ToExtentedTokenArr(string str)
+
+        public static ExtentedToken ConvertFromExpression(string expression)
         {
-            Token[] tokens = Token.Tokenize(str);
-            
+            ExtentedToken[] tokens = ToExtentedTokenArr(expression);
+            return ConvertFromExpression(tokens);
+        }
+
+        public static ExtentedToken ConvertFromExpression(IEnumerable<Token> expression)
+        {
+            ExtentedToken[] tokens = ToExtentedTokenArr(expression);
+            return ConvertFromExpression(tokens);
+        }
+        public static ExtentedToken ConvertFromExpression(IEnumerable<ExtentedToken> expression)
+        {
+            Performer performer = new(expression);
+            performer.Parse();
+            return new((x) => performer.CalcAt(x));
+        }
+
+        public static ExtentedToken[] ToExtentedTokenArr(IEnumerable<Token> expression)
+        {
+            Token[] tokens = expression.ToArray();
+
             List<ExtentedToken> operators = new List<ExtentedToken>();
 
             List<Token> operatorList = new();
 
             int level = 0;
-            for(int i = 0; i < tokens.Length; i++)
+            for (int i = 0; i < tokens.Length; i++)
             {
 
                 if (tokens[i].Type == Token.TYPE.L_BRACE)
@@ -98,7 +118,7 @@ namespace StringParser
                     tokens[i].Type == Token.TYPE.VARIABLE ||
                     tokens[i].Type == Token.TYPE.FLOAT_NUM)
                 {
-                    
+
                     int targetLevel = level;
                     operatorList.Add(tokens[i]);
 
@@ -147,6 +167,18 @@ namespace StringParser
 
 
             return operators.ToArray();
+
+        }
+        public static ExtentedToken[] ToExtentedTokenArr(string str)
+        {
+            Token[] tokens = Token.Tokenize(str);
+            return ToExtentedTokenArr(tokens);
+            
+        }
+
+        public static ExtentedToken Merge(ExtentedToken origin, ExtentedToken child)
+        {
+            return new((x) => child.Val(origin.Val(x)));
         }
 
         private static int DefinePriority(Token token)
