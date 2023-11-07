@@ -7,7 +7,7 @@ namespace P
     {
         static void Main()
         {
-            string str = "sin(x) + cos(x)";
+            string str = " sin(cos(x)) - 5 * (-2/7 + 1)";
 
             Performer performer = new(str);
             performer.Parse();

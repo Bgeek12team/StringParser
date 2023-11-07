@@ -105,7 +105,7 @@ namespace StringParser
                 {
                     var elem1 = stack.Pop();
                     var elem2 = stack.Pop();
-                    stack.Push(ExtentedToken.Unify(elem1, elem2, token));
+                    stack.Push(ExtentedToken.Unify(elem2, elem1, token));
                 }
             }
             _function = stack.Pop();

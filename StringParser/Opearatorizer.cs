@@ -98,37 +98,40 @@ namespace StringParser
                     tokens[i].Type == Token.TYPE.VARIABLE ||
                     tokens[i].Type == Token.TYPE.FLOAT_NUM)
                 {
+                    
                     int targetLevel = level;
                     operatorList.Add(tokens[i]);
-                    do
+
+                    if (tokens[i].Type == Token.TYPE.FUNCTION || tokens[i].Type == Token.TYPE.UNARY_OPERATOR)
                     {
-                        if (i < tokens.Length - 1)
-                            i++;
-                        else
-                            break;
-                        if (tokens[i].Type == Token.TYPE.L_BRACE)
+                        do
                         {
-                            level++;
-                            operatorList.Add(tokens[i]);
-                            continue;
-                        }
-                        if (tokens[i].Type == Token.TYPE.R_BRACE)
-                        {
-                            level--;
-                            operatorList.Add(tokens[i]);
-                            continue;
-                        }
-                        if (tokens[i].Type == Token.TYPE.UNARY_OPERATOR ||
-                            tokens[i].Type == Token.TYPE.FUNCTION ||
-                            tokens[i].Type == Token.TYPE.INT_NUM ||
-                            tokens[i].Type == Token.TYPE.VARIABLE ||
-                            tokens[i].Type == Token.TYPE.FLOAT_NUM)
-                        {
-                            operatorList.Add(tokens[i]);
-                        }
-                        if (level == targetLevel)
-                            break;
-                    } while (true);
+                            if (i < tokens.Length - 1)
+                                i++;
+                            else
+                                break;
+                            if (tokens[i].Type == Token.TYPE.L_BRACE)
+                            {
+                                level++;
+                                operatorList.Add(tokens[i]);
+                            }
+                            if (tokens[i].Type == Token.TYPE.R_BRACE)
+                            {
+                                level--;
+                                operatorList.Add(tokens[i]);
+                            }
+                            if (tokens[i].Type == Token.TYPE.UNARY_OPERATOR ||
+                                tokens[i].Type == Token.TYPE.FUNCTION ||
+                                tokens[i].Type == Token.TYPE.INT_NUM ||
+                                tokens[i].Type == Token.TYPE.VARIABLE ||
+                                tokens[i].Type == Token.TYPE.FLOAT_NUM)
+                            {
+                                operatorList.Add(tokens[i]);
+                            }
+                            if (level == targetLevel)
+                                break;
+                        } while (true);
+                    }
 
                     Token[] opList = new Token[operatorList.Count];
                     operatorList.CopyTo(opList);
