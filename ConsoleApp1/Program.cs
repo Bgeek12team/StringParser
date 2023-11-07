@@ -7,15 +7,15 @@ namespace P
     {
         static void Main()
         {
+            string str = "sin(x) + cos(x)";
 
-            const int x = 3;
-            string str = "ln(sqrt(x)) + 5 / 7";
+            Performer performer = new(str);
+            performer.Parse();
 
-            
-            foreach (var op in ExtentedToken.ToExtentedTokenArr(str))
-            {
-                Console.WriteLine(op.ToString());
-            }
+            const double x = 0;
+            double res = performer.CalcAt(x);
+
+            Console.WriteLine(res);
             
         }
     }

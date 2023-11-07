@@ -31,7 +31,7 @@ namespace StringParser
 
         public delegate double CalcAt(double x);
 
-        public CalcAt val;
+        public CalcAt Val;
 
         public string _stringVal;
 
@@ -39,10 +39,19 @@ namespace StringParser
         {
             get => _stringVal;
         }
+
+        private ExtentedToken(CalcAt function)
+        {
+            this.Val = function;
+            _type = TYPE.OP;
+            _stringVal = function.ToString();
+        }
+
         private ExtentedToken(Operator op) // для OP
         {
             _type = TYPE.OP;
-            val = new(op.CactAt);
+            Val = new(op.CactAt);
+            _stringVal = op.ToString();
         }
 
         private ExtentedToken(int priority, string s) // для BIN_OP
@@ -90,10 +99,13 @@ namespace StringParser
                     tokens[i].Type == Token.TYPE.FLOAT_NUM)
                 {
                     int targetLevel = level;
+                    operatorList.Add(tokens[i]);
                     do
                     {
                         if (i < tokens.Length - 1)
                             i++;
+                        else
+                            break;
                         if (tokens[i].Type == Token.TYPE.L_BRACE)
                         {
                             level++;
@@ -114,7 +126,9 @@ namespace StringParser
                         {
                             operatorList.Add(tokens[i]);
                         }
-                    } while (level != targetLevel);
+                        if (level == targetLevel)
+                            break;
+                    } while (true);
 
                     Token[] opList = new Token[operatorList.Count];
                     operatorList.CopyTo(opList);
@@ -127,6 +141,7 @@ namespace StringParser
                 }
 
             }
+
 
             return operators.ToArray();
         }
@@ -147,6 +162,28 @@ namespace StringParser
             return -1;
         }
 
+        public static ExtentedToken Unify(ExtentedToken first, ExtentedToken second, ExtentedToken operation)
+        {
+            if (operation.Type != TYPE.BIN_OP 
+                || first.Type != TYPE.OP || second.Type != TYPE.OP)
+                throw new Exception("!!");
+
+            switch (operation.StringVal) 
+            {
+                case "+":
+                    return new ExtentedToken((x) => first.Val(x) + second.Val(x));
+                case "-":
+                    return new ExtentedToken((x) => first.Val(x) - second.Val(x));
+                case "*":
+                    return new ExtentedToken((x) => first.Val(x) * second.Val(x));
+                case "/":
+                    return new ExtentedToken((x) => first.Val(x) / second.Val(x));
+                case "^":
+                    return new ExtentedToken((x) => Math.Pow(first.Val(x), second.Val(x)));
+            }
+            throw new Exception("!!");
+
+        }
         public override string ToString()
         {
             if (_type == TYPE.BIN_OP)
@@ -163,7 +200,7 @@ namespace StringParser
             }
             else
             {
-                return $"OPERATOR : {val.ToString()}";
+                return $"OPERATOR : {_stringVal} : {Val.ToString()}";
             }
         }
     }

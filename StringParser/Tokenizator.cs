@@ -48,7 +48,34 @@ namespace StringParser
                 {
                     continue;
                 }
+                if (Char.IsDigit(str[i]))
+                {
+                    string remainderBeforeDigit = str.Substring(lastToken, i - lastToken);
+
+                    if (TryParseToken(remainderBeforeDigit, out Token token3))
+                    {
+                        tokens.Add(token3);
+                        lastToken = i;
+                    }
+
+                    int pointCounter = 0;
+                    while (pointCounter < 2)
+                    {
+                        i++;
+                        if (i >= str.Length)
+                            break;
+                        if (Char.IsDigit(str[i]))
+                        {
+                            continue;
+                        }
+                        else if (str[i] == '.')
+                            pointCounter++;
+                        else
+                            break;
+                    }
+                }
                 string parsableString = str.Substring(lastToken, i - lastToken);
+
                 if (TryParseToken(parsableString, out Token token)) {
                     tokens.Add(token);
                     lastToken = i;
