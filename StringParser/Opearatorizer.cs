@@ -41,7 +41,7 @@ namespace StringParser
             get => _stringVal;
         }
 
-        private ExtentedToken(CalcAt function)
+        private ExtentedToken(CalcAt function) // OP
         {
             this.Val = function;
             _type = TYPE.OP;
@@ -67,6 +67,16 @@ namespace StringParser
             _type = (TYPE)((int)token.Type-3);
             _stringVal = token.TokenString;
             _priority = balance;
+        }
+
+        public static ExtentedToken ConvertFromToken(Token token)
+        {
+            if (token.Type == Token.TYPE.R_BRACE || token.Type == Token.TYPE.L_BRACE)
+                return new ExtentedToken(token, 0);
+            else if (token.Type == Token.TYPE.BINARY_OPERATOR)
+                return new ExtentedToken(DefinePriority(token), token.TokenString);
+            else 
+                return new ExtentedToken(new Operator(new List<Token>() { token }));
         }
 
         public static ExtentedToken ConvertFromExpression(string expression)

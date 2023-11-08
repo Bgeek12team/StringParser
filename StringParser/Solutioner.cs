@@ -65,14 +65,13 @@ namespace StringParser
                     }
                     else
                     {
-                        var elem = stack.Pop();
-                        while((elem.Type != ExtentedToken.TYPE.LEFT_B || elem.Priority > stack.Peek().Priority))
+                        ExtentedToken elem;
+                        do
                         {
-                            queue.Enqueue(elem);
-                            if (stack.Count == 0)
-                                break;
                             elem = stack.Pop();
+                            queue.Enqueue(elem);
                         }
+                        while (stack.Count != 0 && (elem.Type != ExtentedToken.TYPE.LEFT_B || elem.Priority > stack.Peek().Priority));
                         stack.Push(token);
                         continue;
                     }
