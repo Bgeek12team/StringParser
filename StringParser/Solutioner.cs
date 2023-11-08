@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,66 +42,43 @@ namespace StringParser
 
         private ExtentedToken[] ConvertToPostfix(ExtentedToken[] infixTokens)
         {
-            Queue<ExtentedToken> queue = new();
-            Stack<ExtentedToken> stack = new();
+            List<ExtentedToken> postfixExpression = new List<ExtentedToken>();
+            Stack<ExtentedToken> operatorStack = new Stack<ExtentedToken>();
 
-            foreach (var token in infixTokens)
+            foreach (var c in infixTokens)
             {
-                if (token.Type == ExtentedToken.TYPE.OP)
+                if (c.Type == ExtentedToken.TYPE.OP)
                 {
-                    queue.Enqueue(token);
-                    continue;
+                    postfixExpression.Add(c);
                 }
-                if (token.Type == ExtentedToken.TYPE.BIN_OP)
+                else if (c.Type == ExtentedToken.TYPE.LEFT_B)
                 {
-                    if (stack.Count == 0 || stack.Peek().Type == ExtentedToken.TYPE.LEFT_B)
-                    {
-                        stack.Push(token);
-                        continue;
-                    }
-                    if (token.Priority > stack.Peek().Priority)
-                    {
-                        stack.Push(token);
-                        continue;
-                    }
-                    else
-                    {
-                        ExtentedToken elem;
-                        do
-                        {
-                            elem = stack.Pop();
-                            queue.Enqueue(elem);
-                        }
-                        while (stack.Count != 0 && (elem.Type != ExtentedToken.TYPE.LEFT_B || elem.Priority > stack.Peek().Priority));
-                        stack.Push(token);
-                        continue;
-                    }
+                    operatorStack.Push(c);
                 }
-                if (token.Type == ExtentedToken.TYPE.LEFT_B)
+                else if (c.Type == ExtentedToken.TYPE.RIGHT_B)
                 {
-                    stack.Push(token);
-                    continue;
-                }
-                if (token.Type == ExtentedToken.TYPE.RIGHT_B)
-                {
-                    var elem = stack.Pop();
-                    while (elem.Type != ExtentedToken.TYPE.LEFT_B)
+                    while (operatorStack.Count > 0 && operatorStack.Peek().Type != ExtentedToken.TYPE.LEFT_B)
                     {
-                        queue.Enqueue(elem);
-                        if (stack.Count == 0)
-                            break;
-                        elem = stack.Pop();
+                        postfixExpression.Add(operatorStack.Pop());
                     }
-                    //
-                    continue;
+                    operatorStack.Pop(); 
                 }
-
+                else
+                {
+                    while (operatorStack.Count > 0 && operatorStack.Peek().Priority >= c.Priority)
+                    {
+                        postfixExpression.Add(operatorStack.Pop());
+                    }
+                    operatorStack.Push(c);
+                }
             }
 
-            foreach (var elem in stack)
-                queue.Enqueue(elem);
+            while (operatorStack.Count > 0)
+            {
+                postfixExpression.Add(operatorStack.Pop());
+            }
 
-            return queue.ToArray();
+            return postfixExpression.ToArray();
         }
 
         private void ExtractDelegate(ExtentedToken[] postfixTokens)

@@ -7,8 +7,8 @@ namespace P
     {
         static void Main()
         {
-            string str = " x^2 + 5*x + 6";
-            string eQstr = " (x+2) * (x+3) ";
+            string str = " ln ( sqrt( x^2 + 5*x + 6)  ) ";
+            string eQstr = " ln( (x+2) * (x+3) ) / 2";
 
             const double x = 0;
 
