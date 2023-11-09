@@ -12,7 +12,7 @@ namespace StringParser
     /// не содержащей бинарных операторов, значение которой можно вычислить
     /// для данного х
     /// </summary>
-    public class Operator
+    internal class Operator
     {
         /// <summary>
         /// Список токенов, лежащий в основе оператора

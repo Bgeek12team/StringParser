@@ -12,7 +12,7 @@ namespace StringParser
     /// расширенных токенов, являющейся алгебраической коомбинацией сложных функций и констант,
     /// и вычислять его значение
     /// </summary>
-    public class Performer
+    internal class Performer
     {
         /// <summary>
         /// Токен - представляющий собой итоговую функцию

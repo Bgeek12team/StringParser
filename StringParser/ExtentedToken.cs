@@ -13,7 +13,7 @@ namespace StringParser
     /// произвольное выражение, значение которого можно вычислить,
     /// а также либо скобки либо бинарный оператор
     /// </summary>
-    public class ExtentedToken
+    internal class ExtentedToken
     {
         /// <summary>
         /// Тип токена, функция, которую он выполняет

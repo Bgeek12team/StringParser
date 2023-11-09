@@ -9,7 +9,7 @@ namespace StringParser
     /// <summary>
     /// Класс токен, представляющий собой значимое выражение
     /// </summary>
-    public class Token
+    internal class Token
     {
         /// <summary>
         /// Константа, принимаемая за независимую переменную
@@ -71,29 +71,7 @@ namespace StringParser
                 }
                 if (Char.IsDigit(str[i]))
                 {
-                    string remainderBeforeDigit = str.Substring(lastToken, i - lastToken);
-
-                    if (TryParseToken(remainderBeforeDigit, out Token token3))
-                    {
-                        tokens.Add(token3);
-                        lastToken = i;
-                    }
-
-                    int pointCounter = 0;
-                    while (pointCounter < 2)
-                    {
-                        i++;
-                        if (i >= str.Length)
-                            break;
-                        if (Char.IsDigit(str[i]))
-                        {
-                            continue;
-                        }
-                        else if (str[i] == '.')
-                            pointCounter++;
-                        else
-                            break;
-                    }
+                    ParseNum(str, ref lastToken, ref i, tokens);
                 }
                 string parsableString = str.Substring(lastToken, i - lastToken);
 
@@ -108,6 +86,17 @@ namespace StringParser
                 tokens.Add(token2);
             }
 
+            CheckForUnary(tokens);
+
+            return tokens.ToArray();
+        }
+        /// <summary>
+        /// Преобразует необходимые бинарные минусы в унарные 
+        /// в данном списке токенов
+        /// </summary>
+        /// <param name="tokens">Список рассматриваемых токенов</param>
+        private static void CheckForUnary(List<Token> tokens)
+        {
             for (int i = 0; i < tokens.Count; i++)
             {
                 if (tokens[i].TokenString == "-")
@@ -116,8 +105,39 @@ namespace StringParser
                         tokens[i]._type = TYPE.UNARY_OPERATOR;
                 }
             }
+        }
+       /// <summary>
+       /// Осуществляет обработку чисел
+       /// </summary>
+       /// <param name="str">Обрабатываемая строка</param>
+       /// <param name="lastToken">Индекс последнего токена в строке</param>
+       /// <param name="i">Изменяемый индекс i в строке</param>
+       /// <param name="tokens">Список обрабаываемых токенов</param>
+        private static void ParseNum(string str, ref int lastToken, ref int i, List<Token> tokens)
+        {
+            string remainderBeforeDigit = str.Substring(lastToken, i - lastToken);
 
-            return tokens.ToArray();
+            if (TryParseToken(remainderBeforeDigit, out Token token3))
+            {
+                tokens.Add(token3);
+                lastToken = i;
+            }
+
+            int pointCounter = 0;
+            while (pointCounter < 2)
+            {
+                i++;
+                if (i >= str.Length)
+                    break;
+                if (Char.IsDigit(str[i]))
+                {
+                    continue;
+                }
+                else if (str[i] == '.')
+                    pointCounter++;
+                else
+                    break;
+            }
         }
         /// <summary>
         /// Осуществляет, если он возможен, приведение строки к Токену
