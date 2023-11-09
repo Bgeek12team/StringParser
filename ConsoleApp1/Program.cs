@@ -1,22 +1,26 @@
-﻿using StringParser;
+﻿
 
-namespace P
+namespace StringParser
 {
    
     class P
     {
         static void Main()
         {
-            string str = " ln ( sqrt( x^2 + 5*x + 6)  ) ";
-            string eQstr = " ln( (x+2) * (x+3) ) / 2";
+            string str = " ln ( sqrt(x^2 + 5*x + 6)  ) ";
+            string eQstr = " ln( (x+2) * (x+3) ) / 2 ";
 
-            const double x = 0;
+            const double x = 2;
 
-            //ExtentedToken inner = ExtentedToken.ConvertFromExpression(str);
-            //ExtentedToken outer = ExtentedToken.ConvertFromExpression("ln(x)");
-            //var extentedToken = ExtentedToken.Merge(inner, outer);
-            //Console.WriteLine(extentedToken.Val(x));
-
+            /*
+            
+            
+            ExtentedToken inner = ExtentedToken.ConvertFromExpression(s);
+            ExtentedToken outer = ExtentedToken.ConvertFromExpression(f);
+            var extentedToken = ExtentedToken.Merge(outer, inner);
+            Console.WriteLine(extentedToken.Val(x));
+            Console.WriteLine(inner.Val(15));
+            */
             ExpressionParser expressionParser = new(str);
             expressionParser.Parse();
             Console.WriteLine(expressionParser.CalcAt(x));
@@ -32,7 +36,7 @@ namespace P
             Console.WriteLine(expressionParser2.CalcAt(x + 1));
 
             Console.WriteLine(expressionParser2.CalcAt(x + 2));
-
+            
         }
     }
 }

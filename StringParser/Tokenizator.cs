@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace StringParser
 {
+    /// <summary>
+    /// Класс токен, представляющий собой значимое выражение
+    /// </summary>
     public class Token
     {
+        /// <summary>
+        /// Константа, принимаемая за независимую переменную
+        /// </summary>
         public const string variable = "x";
+        /// <summary>
+        /// Типы токенов
+        /// </summary>
         public enum TYPE
         {
             BINARY_OPERATOR, // оператор бинарный
@@ -22,21 +31,33 @@ namespace StringParser
             VARIABLE // переменная x
         }
 
-        
+       
         private TYPE _type;
-
+        /// <summary>
+        /// Тип текущего токена
+        /// </summary>
         public TYPE Type { get => this._type; }
 
         private string _token;
-
+        /// <summary>
+        /// Строка, отображающая токен
+        /// </summary>
         public string TokenString { get => this._token; }
-
+        /// <summary>
+        /// Конструктор, создающий токен на основе строки и ее типа
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="type"></param>
         private Token(string str, TYPE type)
         {
             this._token = str;
             this._type = type;
         }
-
+        /// <summary>
+        /// Функция, извлекающая из строки массив токенов
+        /// </summary>
+        /// <param name="str">Обрабатываемая строка</param>
+        /// <returns>Массив токенов, представляющий строку</returns>
         public static Token[] Tokenize(string str)
         {
             List<Token> tokens = new();
@@ -98,7 +119,15 @@ namespace StringParser
 
             return tokens.ToArray();
         }
-
+        /// <summary>
+        /// Осуществляет, если он возможен, приведение строки к Токену
+        /// </summary>
+        /// <param name="str">Обрабатываемая строка</param>
+        /// <param name="token">Выходной токен - результат приведения</param>
+        /// <returns>
+        /// True: приведение возможно
+        /// False: приведение невозможно
+        /// </returns>
         private static bool TryParseToken(string str, out Token token)
         {
             str = str.Trim().ToLower();
@@ -107,7 +136,7 @@ namespace StringParser
                 token = new Token(str, TYPE.INT_NUM);
                 return true;
             }
-            if (double.TryParse(str, out double resD))
+            if (double.TryParse(str.Replace('.', ','), out double resD))
             {
                 token = new Token(str, TYPE.FLOAT_NUM);
                 return true;
@@ -128,6 +157,9 @@ namespace StringParser
                     return true;
                 case "^":
                     token = new Token("^", TYPE.BINARY_OPERATOR);
+                    return true;
+                case "%":
+                    token = new Token("%", TYPE.BINARY_OPERATOR);
                     return true;
                 case "sqrt":
                     token = new Token("sqrt", TYPE.FUNCTION);
@@ -167,7 +199,10 @@ namespace StringParser
             token = null;
             return false;
         }
-
+        /// <summary>
+        /// Возвращает строковое представление токена
+        /// </summary>
+        /// <returns>Тип токена и строку, его представляющую</returns>
         public override string ToString()
         {
             return $"{_token} : {_type}";

@@ -4,6 +4,7 @@ namespace form
 {
     public partial class Form1 : Form
     {
+        private ExpressionParser parser;
         private int maxSymbols;
         public Form1()
         {
@@ -92,8 +93,13 @@ namespace form
 
         private void buttonRes_Click(object sender, EventArgs e)
         {
-            Performer performer = new(txBxInput.Text);
-
+            parser = new(txBxInput.Text);
+            try
+            {
+                parser.Parse();
+            }
+            catch { }
+            finally { txBxInput.Text = parser.CalcAt(0).ToString(); }
         }
 
         private void txBxInput_TextChanged(object sender, EventArgs e)

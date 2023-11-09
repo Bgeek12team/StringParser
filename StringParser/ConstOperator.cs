@@ -7,9 +7,20 @@ using System.Threading.Tasks;
 namespace StringParser
 {
 
-    
+    /// <summary>
+    /// Класс оператор - последовательности обыкновенных токенов,
+    /// не содержащей бинарных операторов, значение которой можно вычислить
+    /// для данного х
+    /// </summary>
     public class Operator
     {
+        /// <summary>
+        /// Список токенов, лежащий в основе оператора
+        /// </summary>
+        private List<Token> _baseTokens;
+        /// <summary>
+        /// Словарь строковых отображений функций и их делегаты
+        /// </summary>
         private Dictionary<string, Func<double, double>> doubleFunctions = new()
         {
             {"ln", (a) => Math.Log(a) },
@@ -24,7 +35,11 @@ namespace StringParser
             {"-", (a) => -a }
         };
 
-
+        /// <summary>
+        /// Вычисляет факториал от данного числа
+        /// </summary>
+        /// <param name="a">Данное числа</param>
+        /// <returns>Факториал данного числа</returns>
         private static int Factorial(int a)
         {
             int res = 1;
@@ -32,58 +47,54 @@ namespace StringParser
                 res *= i;
             return res;
         }
-
-        private List<Token> _baseTokens;
+        /// <summary>
+        /// Конструктор, создающий экземпляр объекта на основе последовательности токенов
+        /// </summary>
+        /// <param name="tokens">Последовательность токенов</param>
         public Operator(IEnumerable<Token> tokens)
         {
             this._baseTokens = tokens.ToList();
         }
+        /// <summary>
+        /// Вычисляет значение оператора для данного х
+        /// </summary>
+        /// <param name="x">Данный х</param>
+        /// <returns>Значение оператора при данном х</returns>
+        /// <exception cref="Exception">Исключение, возникающее, когда последовательность
+        /// токенов невозможно преобразовать в целое выражение</exception>
         public double CactAt(double x)
         {
             Stack<Token> stack = new Stack<Token>();
             foreach (Token token in _baseTokens)
-            {
                 if (token.Type != Token.TYPE.R_BRACE &&
                     token.Type != Token.TYPE.L_BRACE)
                 {
                     stack.Push(token);
                     continue;
                 }
-            }
-
+            
+            double res;
             if (stack.Peek().Type == Token.TYPE.FLOAT_NUM)
-            {
-                double res = double.Parse(stack.Pop().TokenString);
-                foreach (Token token in stack)
-                {
-                    res = doubleFunctions[token.TokenString].Invoke(res);
-                }
-                return res;
-            }
-            if (stack.Peek().Type == Token.TYPE.INT_NUM)
-            {
-                double res = int.Parse(stack.Pop().TokenString);
-                foreach (Token token in stack)
-                {
-                    res = doubleFunctions[token.TokenString].Invoke(res);
-                }
-                return res;
-            } 
-            if (stack.Peek().Type == Token.TYPE.VARIABLE)
-            {
-                double res = x;
-                foreach (Token token in stack)
-                {
-                    res = doubleFunctions[token.TokenString].Invoke(res);
-                }
-                return res;
-            }
+                res = double.Parse(stack.Pop().TokenString.Replace('.', ','));
+            else if (stack.Peek().Type == Token.TYPE.INT_NUM)
+                res = int.Parse(stack.Pop().TokenString); 
+            else if (stack.Peek().Type == Token.TYPE.VARIABLE)
+                res = x;
             else
-            {
                 throw new Exception("Невозможно распарсить строку!");
-            }
-        }
 
+            foreach (Token token in stack)
+            {
+                res = doubleFunctions[token.TokenString].Invoke(res);
+            }
+            return res;
+        }
+        /// <summary>
+        /// Возвращает строковое представление оператора, 
+        /// включающее в себя его токены
+        /// </summary>
+        /// <returns>Строковое представление оператора, 
+        /// включающее в себя его токены</returns>
         public override string ToString()
         {
             StringBuilder res = new("{");
