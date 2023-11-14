@@ -73,6 +73,8 @@ namespace StringParser
                 {
                     ParseNum(str, ref lastToken, ref i, tokens);
                 }
+                CheckIfE(str, ref i);
+                CheckIfPi(str, ref i);
                 string parsableString = str.Substring(lastToken, i - lastToken);
 
                 if (TryParseToken(parsableString, out Token token)) {
@@ -89,6 +91,30 @@ namespace StringParser
             CheckForUnary(tokens);
 
             return tokens.ToArray();
+        }
+        private static void CheckIfPi(string str, ref int i)
+        {
+            if (str[i] == 'p' && str[i+1] == 'i')
+            {
+                if (str.Substring(i, 6) == "pifunc")
+                {
+                    i += 6;
+                    return;
+                }
+                return;
+            }
+        }
+        private static void CheckIfE(string str, ref int i)
+        {
+            if (str[i] == 'e')
+            {
+                if (str[i+1] == 'x' && str[i+2] == 'p')
+                {
+                    i += 2;
+                    return;
+                }
+                return;
+            }
         }
         /// <summary>
         /// Преобразует необходимые бинарные минусы в унарные 
@@ -214,6 +240,25 @@ namespace StringParser
                 case variable:
                     token = new Token("x", TYPE.VARIABLE);
                     return true;
+                case "e":
+                    token = new Token(Math.E.ToString(), TYPE.FLOAT_NUM);
+                    return true;
+                case "π":
+                case "pi":
+                    token = new Token(Math.PI.ToString(), TYPE.FLOAT_NUM);
+                    return true;
+                case "Γ":
+                case "gamma":
+                    token = new Token("gamma", TYPE.FUNCTION);
+                    return true;
+                case "pifunc":
+                    token = new Token("pifunc", TYPE.FUNCTION);
+                    return true;
+                case "ζ":
+                case "zeta":
+                    token = new Token("pifunc", TYPE.FUNCTION);
+                    return true;
+
 
             }
             token = null;

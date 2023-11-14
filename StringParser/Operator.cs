@@ -29,24 +29,15 @@ namespace StringParser
             {"cos", (a) => Math.Cos(a) },
             {"tg", (a) => Math.Tan(a) },
             {"ctg", (a) => Math.Pow(Math.Tan(a), -1) },
-            {"fact", (a) => Factorial((int)a) },
+            {"fact", (a) => Ariphmetics.Factorial(a) },
             {"sqrt", (a) => Math.Sqrt(a) },
             {Token.variable.ToString(), (a) => a },
-            {"-", (a) => -a }
+            {"-", (a) => -a },
+            {"zeta", (a) => Ariphmetics.Zeta(a) },
+            {"pifunc", (a) => Ariphmetics.Pi(a) },
+            {"gamma", (a) => Ariphmetics.Gamma(a) }
         };
 
-        /// <summary>
-        /// Вычисляет факториал от данного числа
-        /// </summary>
-        /// <param name="a">Данное числа</param>
-        /// <returns>Факториал данного числа</returns>
-        private static int Factorial(int a)
-        {
-            int res = 1;
-            for (int i = 2; i <= a; i++)
-                res *= i;
-            return res;
-        }
         /// <summary>
         /// Конструктор, создающий экземпляр объекта на основе последовательности токенов
         /// </summary>
