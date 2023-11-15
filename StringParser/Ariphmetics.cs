@@ -85,14 +85,14 @@ namespace StringParser
             return count;
         }
         /// <summary>
-        /// Вычисляет значение гамма-функции от данного числа
+        /// Вычисляет значение гамма-функции от данного числа, с заданной
+        /// точностью(метод Аппроксимация Ланцоша)
         /// </summary>
         /// <param name="a">Данное число в границах [1:171]</param>
+        /// <param name="r">кол-во знаков после запятой</param>
         /// <returns>Значение гамма-функции данного числа</returns>
-        public static double Gamma(double a)
+        public static double Gamma(double a, int r)
         {
-            if (a <= 0)
-                throw new ArgumentOutOfRangeException("a", "a должно быть больше нуля");
             double[] coeff = {
             76.18009172947146, -86.50532032941677, 24.01409824083091,
             -1.231739572450155, 0.001208650973866179, -0.000005395239384953}; // массив коэффициентов при g = 5
@@ -102,7 +102,7 @@ namespace StringParser
             double ser = 1.000000000190015;// первый коэффициент
             for (int i = 0; i <= coeff.Length - 1; ++i)
                 ser += coeff[i] / ++y;
-            return Math.Exp(-temp + Math.Log(2.5066282746310005) + Math.Log(ser / a));
+            return Math.Round(Math.Exp(-temp + Math.Log(2.5066282746310005) + Math.Log(ser / a)),r);
         }
     }
 }
