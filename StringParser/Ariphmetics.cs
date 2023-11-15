@@ -87,7 +87,7 @@ namespace StringParser
         /// <summary>
         /// Вычисляет значение гамма-функции от данного числа
         /// </summary>
-        /// <param name="a">Данное число</param>
+        /// <param name="a">Данное число в границах [1:171]</param>
         /// <returns>Значение гамма-функции данного числа</returns>
         public static double Gamma(double a)
         {
