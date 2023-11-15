@@ -11,6 +11,7 @@ namespace StringParser
     /// </summary>
     internal class Token
     {
+        const double EULER_MASCHERONI = 0.57721566490153286060;
         /// <summary>
         /// Константа, принимаемая за независимую переменную
         /// </summary>
@@ -244,6 +245,9 @@ namespace StringParser
                 case "e":
                     token = new Token(Math.E.ToString(), TYPE.FLOAT_NUM);
                     return true;
+                case "γ":
+                    token = new Token(EULER_MASCHERONI.ToString(), TYPE.FLOAT_NUM);
+                    return true;
                 case "π":
                 case "pi":
                     token = new Token(Math.PI.ToString(), TYPE.FLOAT_NUM);
@@ -259,6 +263,7 @@ namespace StringParser
                 case "zeta":
                     token = new Token("pifunc", TYPE.FUNCTION);
                     return true;
+
 
 
             }
