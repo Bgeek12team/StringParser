@@ -7,10 +7,10 @@ namespace StringParser
     {
         static void Main()
         {
-            string str = "pifunc(x) ";
-            string eQstr = "pifunc(x) - sin(ln(x))";
+            string str = "gamma(x) ";
+            string eQstr = "fact(x)";
 
-            const double x = 2000000;
+            const double x = 1;
 
             /*
             
@@ -21,7 +21,7 @@ namespace StringParser
             Console.WriteLine(extentedToken.Val(x));
             Console.WriteLine(inner.Val(15));
             */
-            ExpressionParser expressionParser = new(eQstr);
+            ExpressionParser expressionParser = new(str);
             expressionParser.Parse();
             Console.WriteLine(expressionParser.CalcAt(x));
 
@@ -29,8 +29,6 @@ namespace StringParser
 
             Console.WriteLine(expressionParser.CalcAt(4 * x));
 
-            Console.WriteLine(Ariphmetics.Integrate(expressionParser.CalcAt,
-                100, 10000, 10000));
             ExpressionParser expressionParser2 = new(eQstr);
             expressionParser2.Parse();
             Console.WriteLine(expressionParser2.CalcAt(x));
