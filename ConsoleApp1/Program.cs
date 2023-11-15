@@ -8,9 +8,9 @@ namespace StringParser
         static void Main()
         {
             string str = "pifunc(x) ";
-            string eQstr = " ln( (x+2) * (x+3) ) / 2 ";
+            string eQstr = "pifunc(x) - sin(ln(x))";
 
-            const double x = 2;
+            const double x = 2000000;
 
             /*
             
@@ -21,7 +21,7 @@ namespace StringParser
             Console.WriteLine(extentedToken.Val(x));
             Console.WriteLine(inner.Val(15));
             */
-            ExpressionParser expressionParser = new(str);
+            ExpressionParser expressionParser = new(eQstr);
             expressionParser.Parse();
             Console.WriteLine(expressionParser.CalcAt(x));
 
@@ -29,6 +29,8 @@ namespace StringParser
 
             Console.WriteLine(expressionParser.CalcAt(4 * x));
 
+            Console.WriteLine(Ariphmetics.Integrate(expressionParser.CalcAt,
+                100, 10000, 10000));
             ExpressionParser expressionParser2 = new(eQstr);
             expressionParser2.Parse();
             Console.WriteLine(expressionParser2.CalcAt(x));
