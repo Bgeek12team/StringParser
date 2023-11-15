@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+  </PropertyGroup> 
 
   <ItemGroup>
     <ProjectReference Include="..\StringParser\StringParser.csproj" />

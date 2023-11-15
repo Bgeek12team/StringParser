@@ -1,7 +1,43 @@
-﻿namespace form
+﻿using System.Windows.Forms;
+
+namespace calcForm
 {
-    partial class Form1
+    partial class FormCalc
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Text = "FormCalc";
+        }
+
+        #endregion
+
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -358,7 +394,7 @@
             // txBxInput
             // 
             this.txBxInput.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.txBxInput.Location = new System.Drawing.Point(146, 12);
+            this.txBxInput.Location = new System.Drawing.Point(12, 12);
             this.txBxInput.Name = "txBxInput";
             this.txBxInput.Size = new System.Drawing.Size(255, 41);
             this.txBxInput.TabIndex = 0;
