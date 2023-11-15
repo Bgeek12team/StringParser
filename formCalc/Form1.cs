@@ -12,9 +12,10 @@ namespace formCalc
     {
         // private int maxSymbols;
         private bool inputState;
-        private (int x, int y) normalSize = (310, 400);
+        private (int x, int y) normalSize = (310, 465);
         private Button[] numbButton;
-        private string[] operations = { "sin", "cos", "tg", "ctg", "ln", "exp", "ζ", "Г", "π" };
+        private graph chrt;
+        private string[] operations = { "sin", "cos", "tg", "ctg", "ln", "exp", "ζ", "Г", "pifunc" };
         public Form1()
         {
             InitializeComponent();
@@ -43,8 +44,6 @@ namespace formCalc
                 {
                     case "<-":
                         button.Click += (sender, e) => buttonDelEvent(); break;
-                    case "dx":
-                        button.Click += (sender, e) => txBxInput.Text += ")dx"; break;
                     case "√":
                         button.Click += (sender, e) => txBxInput.Text += "sqrt("; break;
                     case "x²":
@@ -59,33 +58,20 @@ namespace formCalc
             }
 
         }
-
-
-
-        private void txBxInput_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void buttonGraph_Click(object sender, EventArgs e)
         {
             buttonCalc.Enabled = true;
             buttonGraph.Enabled = false;
             txBxInput.Left += label1.Width;
             label1.Visible = true;
-            button10.Visible = true;
-            button11.Visible = true;
             groupBoxGraph.Visible = true;
-            Size = new Size(normalSize.x + 500, normalSize.y + 200);
+            Size = new Size(normalSize.x + 1000, normalSize.y + 200);
         }
 
         private void buttonCalc_Click(object sender, EventArgs e)
         {
             buttonCalc.Enabled = false;
             buttonGraph.Enabled = true;
-            button10.Visible = false;
-            button11.Visible = false;
             txBxInput.Left -= label1.Width;
             label1.Visible = false;
             groupBoxGraph.Visible = false;
@@ -122,35 +108,76 @@ namespace formCalc
             }
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonGraphCreate_Click(object sender, EventArgs e)
         {
             groupBoxGraph.Visible = false;
             buttonGraphReset.Visible = true;
+            buttonIntg.Visible = true;
             chart1.Visible = true;
-            var chrt = new graph(double.Parse(txBxXmin.Text), double.Parse(txBxXmax.Text), double.Parse(txBxStep.Text), "sin");
+            buttonIntg.Visible = true;
+            buttonScaleDown.Visible = true;
+            buttonScaleUp.Visible = true;
+            buttonDown.Visible = true;
+            buttonUp.Visible = true;
+
+            chrt = new graph(double.Parse(txBxXmin.Text), double.Parse(txBxXmax.Text), double.Parse(txBxStep.Text), "sin");
             chrt.graphCreate(ref chart1);
-
-
         }
 
         private void buttonGraphReset_Click(object sender, EventArgs e)
         {
             groupBoxGraph.Visible = true;
             chart1.Visible = false;
+            buttonIntg.Visible = false;
+            buttonScaleDown.Visible = false;
+            buttonScaleUp.Visible = false;
+            buttonDown.Visible = false;
+            buttonUp.Visible = false;
             buttonGraphReset.Visible = false;
+
+        }
+
+        private void txBxXmin_TextChanged(object sender, EventArgs e)
+        {
+            txBxStep.Text = calcStep().ToString();
+        }
+
+        private void txBxXmax_TextChanged(object sender, EventArgs e)
+        {
+            txBxStep.Text = calcStep().ToString();
+        }
+        private double calcStep()
+        {
+            return double.TryParse(txBxXmax.Text, out double tValue) && double.TryParse(txBxXmax.Text, out double tValue2) ? (double.Parse(txBxXmax.Text) - double.Parse(txBxXmin.Text)) / 200 : 0;
+        }
+
+        private void buttonDown_Click(object sender, EventArgs e)
+        {
+            chrt.graphOfSetLeft(chart1);
+        }
+
+        private void buttonUp_Click(object sender, EventArgs e)
+        {
+            chrt.graphOfSetRight(chart1);
+        }
+
+        private void buttonScaleUp_Click(object sender, EventArgs e)
+        {
+            chrt.graphUpScale(chart1);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            chrt.graphDownScale(chart1);
         }
     }
-    partial class graph : Control
+    partial class graph
     {
         private double xmin;
         private double xmax;
         private double step;
         private string func;
+        private double scale;
 
         public graph(double xmin, double xmax, double step, string func)
         {
@@ -158,6 +185,7 @@ namespace formCalc
             this.xmax = xmax;
             this.step = step;
             this.func = func;
+            scale = Math.Abs((xmax - xmin) / 20);
         }
 
         public void graphCreate(ref Chart chrt)
@@ -167,6 +195,34 @@ namespace formCalc
             chrt.Series.Add("Sin");
             chrt.Series[0].ChartType = SeriesChartType.Spline;
             chrt.Series[0].BorderWidth = 3;
+            while (x <= xmax)
+            {
+                chrt.Series[0].Points.AddXY(x, Math.Sin(x));
+                x += step;
+            }
+        }
+        public void graphOfSetLeft(Chart chrt)
+        {
+            graphReplace(chrt, scale, scale);
+        }
+        public void graphOfSetRight(Chart chrt)
+        {
+            graphReplace(chrt, -scale, -scale);
+        }
+        public void graphUpScale(Chart chrt)
+        {
+            graphReplace(chrt, -scale, scale);
+        }
+        public void graphDownScale(Chart chrt)
+        {
+            graphReplace(chrt, scale, -scale);
+        }
+        private void graphReplace(Chart chrt, double scaleXmin, double scaleXmax)
+        {
+            xmin -= scaleXmin;
+            xmax -= scaleXmax;
+            double x = xmin;
+            chrt.Series[0].Points.Clear();
             while (x <= xmax)
             {
                 chrt.Series[0].Points.AddXY(x, Math.Sin(x));
