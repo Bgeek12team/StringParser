@@ -16,6 +16,7 @@ namespace formCalc
         private Button[] numbButton;
         private graph chrt;
         private string[] operations = { "sin", "cos", "tg", "ctg", "ln", "exp", "ζ", "Г", "pifunc" };
+        
         public Form1()
         {
             InitializeComponent();
@@ -169,6 +170,11 @@ namespace formCalc
         private void button16_Click(object sender, EventArgs e)
         {
             chrt.graphDownScale(chart1);
+        }
+
+        private void buttonRes_Click(object sender, EventArgs e)
+        {
+
         }
     }
     partial class graph

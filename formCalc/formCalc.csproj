@@ -80,5 +80,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\expressionParser\expressionParser.csproj">
+      <Project>{ff0d632d-c1de-45d3-940c-00ac542535d7}</Project>
+      <Name>expressionParser</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
