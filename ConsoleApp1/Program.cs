@@ -8,7 +8,7 @@ namespace StringParser
         static void Main()
         {
             string str = "gamma(x + 1)";
-            string eQstr = "x";
+            string eQstr = "√(x)";
 
             const double x = 5.5;
 

@@ -207,6 +207,7 @@ namespace StringParser
                 case "%":
                     token = new Token("%", TYPE.BINARY_OPERATOR);
                     return true;
+                case "√":
                 case "sqrt":
                     token = new Token("sqrt", TYPE.FUNCTION);
                     return true;
