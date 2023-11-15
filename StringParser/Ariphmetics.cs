@@ -93,11 +93,22 @@ namespace StringParser
         /// <summary>
         /// Вычисляет значение гамма-функции от данного числа
         /// </summary>
-        /// <param name="a">Данное числа</param>
+        /// <param name="a">Данное число</param>
         /// <returns>Значение гамма-функции данного числа</returns>
         public static double Gamma(double a)
         {
-            return a;
+            if (a <= 0)
+                throw new ArgumentOutOfRangeException("a", "a должно быть больше нуля");
+            double[] coeff = {
+            76.18009172947146, -86.50532032941677, 24.01409824083091,
+            -1.231739572450155, 0.001208650973866179, -0.000005395239384953}; // массив коэффициентов при g = 5
+            double y = a;
+            double temp = a + 5.5;
+            temp -= (a + 0.5) * Math.Log(temp);
+            double ser = 1.000000000190015;// первый коэффициент
+            for (int i = 0; i <= coeff.Length - 1; ++i)
+                ser += coeff[i] / ++y;
+            return Math.Exp(-temp + Math.Log(2.5066282746310005) + Math.Log(ser / a));
         }
     }
 }
