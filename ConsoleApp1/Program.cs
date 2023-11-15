@@ -7,10 +7,10 @@ namespace StringParser
     {
         static void Main()
         {
-            string str = "gamma(x) ";
-            string eQstr = "fact(x)";
+            string str = "gamma(x + 1)";
+            string eQstr = "x";
 
-            const double x = 1;
+            const double x = 5.5;
 
             /*
             
@@ -25,9 +25,9 @@ namespace StringParser
             expressionParser.Parse();
             Console.WriteLine(expressionParser.CalcAt(x));
 
-            Console.WriteLine(expressionParser.CalcAt(2 *x));
+            Console.WriteLine(expressionParser.CalcAt(1 + x));
 
-            Console.WriteLine(expressionParser.CalcAt(4 * x));
+            Console.WriteLine(expressionParser.CalcAt(2 + x));
 
             ExpressionParser expressionParser2 = new(eQstr);
             expressionParser2.Parse();

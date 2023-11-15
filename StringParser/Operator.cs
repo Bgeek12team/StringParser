@@ -14,6 +14,8 @@ namespace StringParser
     /// </summary>
     internal class Operator
     {
+        const double PRECISION = 0.0001;
+        static int DIGITS_AFTER_ZERO = 5;
         /// <summary>
         /// Список токенов, лежащий в основе оператора
         /// </summary>
@@ -35,7 +37,7 @@ namespace StringParser
             {"-", (a) => -a },
             {"zeta", (a) => Ariphmetics.Zeta(a) },
             {"pifunc", (a) => Ariphmetics.Pi(a) },
-            {"gamma", (a) => Ariphmetics.Gamma(a) }
+            {"gamma", (a) => Ariphmetics.Gamma(a, DIGITS_AFTER_ZERO) }
         };
 
         /// <summary>
