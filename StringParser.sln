@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "formCalc", "formCalc\formCalc.csproj", "{4CF984D5-6813-46A3-9260-F51A2B5AEEFB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringParser", "StringParser\StringParser.csproj", "{4E33CB24-F24C-4219-BAF5-91F4FAB990F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4CF984D5-6813-46A3-9260-F51A2B5AEEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CF984D5-6813-46A3-9260-F51A2B5AEEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CF984D5-6813-46A3-9260-F51A2B5AEEFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E33CB24-F24C-4219-BAF5-91F4FAB990F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E33CB24-F24C-4219-BAF5-91F4FAB990F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E33CB24-F24C-4219-BAF5-91F4FAB990F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E33CB24-F24C-4219-BAF5-91F4FAB990F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
