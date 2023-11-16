@@ -1,4 +1,5 @@
-﻿using StringParser;
+﻿using expressionParser;
+using StringParser;
 
 namespace P
 {
@@ -7,11 +8,11 @@ namespace P
     {
         static void Main()
         {
-            ComplexOperator cf = new ComplexOperator();
-            cf += (x) => x + 5;
-            cf += (x) => Math.Pow(x,2);
-
-            Console.WriteLine(cf.CalcAt(5));
+            ExpressionParser ex = new ExpressionParser("(sin(x)) ^ 2 + (cos(x)) ^ 2");
+            ex.Parse();
+            Console.WriteLine(ex.CalcAt(1));
+            Console.WriteLine(ex.CalcAt(2));
+            Console.WriteLine(ex.CalcAt(3));
         }
         public void getMark()
         {

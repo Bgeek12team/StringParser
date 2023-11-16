@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StringParser;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -15,8 +16,8 @@ namespace formCalc
         private (int x, int y) normalSize = (310, 465);
         private Button[] numbButton;
         private graph chrt;
-        private string[] operations = { "sin", "cos", "tg", "ctg", "ln", "exp", "ζ", "Г", "pifunc" };
-        
+        private string[] operations = { "sin", "cos", "tg", "ctg", "ln", "exp", "ζ", "Γ", "pifunc" };
+        private ExpressionParser expressionParser;
         public Form1()
         {
             InitializeComponent();
@@ -97,7 +98,7 @@ namespace formCalc
         }
         private void buttonResEvent()
         {
-            MessageBox.Show("Нет ты хуй!");
+            //MessageBox.Show("Нет ты хуй!"); зачем боже
         }
         private void buttonDelEvent()
         {
@@ -121,7 +122,17 @@ namespace formCalc
             buttonDown.Visible = true;
             buttonUp.Visible = true;
 
-            chrt = new graph(double.Parse(txBxXmin.Text), double.Parse(txBxXmax.Text), double.Parse(txBxStep.Text), "sin");
+            expressionParser = new ExpressionParser(txBxInput.Text);
+            try 
+            { 
+                expressionParser.Parse();
+            } 
+            catch {
+                MessageBox.Show("Некорректный ввод!");
+                return;
+            };
+            chrt = new graph(double.Parse(txBxXmin.Text), double.Parse(txBxXmax.Text), double.Parse(txBxStep.Text), 
+                txBxInput.Text, expressionParser.CalcAt);
             chrt.graphCreate(ref chart1);
         }
 
@@ -174,7 +185,15 @@ namespace formCalc
 
         private void buttonRes_Click(object sender, EventArgs e)
         {
+            expressionParser = new ExpressionParser(txBxInput.Text);
 
+            try { expressionParser.Parse(); }
+            catch
+            {
+                MessageBox.Show("Некорректный ввод!");
+                return;
+            };
+            txBxInput.Text = expressionParser.CalcAt(0).ToString();
         }
     }
     partial class graph
@@ -184,26 +203,28 @@ namespace formCalc
         private double step;
         private string func;
         private double scale;
+        private Func<double, double> function;
 
-        public graph(double xmin, double xmax, double step, string func)
+        public graph(double xmin, double xmax, double step, string func, Func<double, double> function)
         {
             this.xmin = xmin;
             this.xmax = xmax;
             this.step = step;
             this.func = func;
             scale = Math.Abs((xmax - xmin) / 20);
+            this.function = function;
         }
 
         public void graphCreate(ref Chart chrt)
         {
             double x = xmin;
             chrt.Series.Clear();
-            chrt.Series.Add("Sin");
+            chrt.Series.Add(func);
             chrt.Series[0].ChartType = SeriesChartType.Spline;
             chrt.Series[0].BorderWidth = 3;
             while (x <= xmax)
             {
-                chrt.Series[0].Points.AddXY(x, Math.Sin(x));
+                chrt.Series[0].Points.AddXY(x, function(x));
                 x += step;
             }
         }
@@ -231,7 +252,7 @@ namespace formCalc
             chrt.Series[0].Points.Clear();
             while (x <= xmax)
             {
-                chrt.Series[0].Points.AddXY(x, Math.Sin(x));
+                chrt.Series[0].Points.AddXY(x, function(x));
                 x += step;
             }
         }

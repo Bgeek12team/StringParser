@@ -95,8 +95,12 @@ namespace StringParser
         }
         private static void CheckIfPi(string str, ref int i)
         {
+            if (i >= str.Length - 1)
+                return;
             if (str[i] == 'p' && str[i+1] == 'i')
             {
+                if (i >= str.Length - 7)
+                    return;
                 if (str.Substring(i, 6) == "pifunc")
                 {
                     i += 6;
@@ -107,8 +111,12 @@ namespace StringParser
         }
         private static void CheckIfE(string str, ref int i)
         {
+            if (i >= str.Length - 1)
+                return;
             if (str[i] == 'e')
             {
+                if (i >= str.Length - 3)
+                    return;
                 if (str[i+1] == 'x' && str[i+2] == 'p')
                 {
                     i += 2;
