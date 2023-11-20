@@ -269,7 +269,7 @@ namespace StringParser
                     return true;
                 case "ζ":
                 case "zeta":
-                    token = new Token("pifunc", TYPE.FUNCTION);
+                    token = new Token("zeta", TYPE.FUNCTION);
                     return true;
 
 
