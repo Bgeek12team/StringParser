@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-
+using System.Threading.Tasks;
 namespace formCalc
 {
     public partial class Form1 : Form
@@ -162,7 +162,8 @@ namespace formCalc
         }
         private double calcStep()
         {
-            return double.TryParse(txBxXmax.Text, out double tValue) && double.TryParse(txBxXmax.Text, out double tValue2) ? (double.Parse(txBxXmax.Text) - double.Parse(txBxXmin.Text)) / 200 : 0;
+            return 
+                double.TryParse(txBxXmax.Text, out double tValue) && double.TryParse(txBxXmax.Text, out double tValue2) ? (double.Parse(txBxXmax.Text) - double.Parse(txBxXmin.Text)) / 200 : 0;
         }
 
         private void buttonDown_Click(object sender, EventArgs e)
@@ -254,11 +255,36 @@ namespace formCalc
             double value;
             double x = xmin;
             chrt.Series[0].Points.Clear();
+            double[] values = new double[(int)((xmax - xmin) / step) + 1];
+
+            Parallel.Invoke(
+                () =>
+                {
+                    while (x <= xmax)
+                    {
+                        try
+                        {
+                            double res = function(x);
+                            value = !double.IsInfinity(res) ? res : throw new Exception();
+                        }
+                        catch (Exception)
+                        {
+                            x += step;
+                            continue;
+                        }
+                        chrt.Series[0].Points.AddXY(x, Math.Round(value, 8));
+                        x += step;
+                    }
+                }
+                
+                );
+            /*
             while (x <= xmax)
             {
                 try
                 {
-                    value = function(x) != double.PositiveInfinity ? function(x) : throw new Exception();
+                    double res = function(x);
+                    value = !double.IsInfinity(res) ? res : throw new Exception();
                 }
                 catch (Exception)
                 {
@@ -268,7 +294,7 @@ namespace formCalc
                 chrt.Series[0].Points.AddXY(x, Math.Round(value, 8));
                 x += step;
             }
-            
+            */
             
         }
     }

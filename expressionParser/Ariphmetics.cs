@@ -59,7 +59,7 @@ namespace StringParser
         public static double Zeta(double s)
         {
             double result = 0;
-            double precision = 0.000001;
+            double precision = 0.0000001;
             long n = 1;
             if (s > 1)
             {
