@@ -13,7 +13,7 @@ namespace formCalc
     {
         // private int maxSymbols;
         private bool inputState;
-        private (int x, int y) normalSize = (310, 465);
+        private (int x, int y) normalSize = (400, 600);
         private Button[] numbButton;
         private graph chrt;
         private string[] operations = { "sin", "cos", "tg", "ctg", "ln", "exp", "ζ", "Γ", "pifunc" };
@@ -201,6 +201,11 @@ namespace formCalc
         private void buttonIntg_Click(object sender, EventArgs e) 
         { 
             MessageBox.Show(txBxStartIntg.Text == String.Empty || txBxEndIntg.Text == String.Empty ? "Некорректный ввод!" : Ariphmetics.Integrate(expressionParser.CalcAt, double.Parse(txBxStartIntg.Text), double.Parse(txBxEndIntg.Text), 100).ToString()); 
+        }
+
+        private void buttonAboutProgramm_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Данная программа позволяюет вычислять различные значения функций\nСтрокить графики\nИ сосать хуи)");
         }
     }
     partial class graph
