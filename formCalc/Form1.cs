@@ -76,6 +76,7 @@ namespace formCalc
             buttonGraph.Enabled = true;
             txBxInput.Left -= label1.Width;
             label1.Visible = false;
+            groupBoxIntg.Visible = false;
             groupBoxGraph.Visible = false;
             Size = new Size(normalSize.x, normalSize.y);
         }
@@ -112,16 +113,6 @@ namespace formCalc
 
         private void buttonGraphCreate_Click(object sender, EventArgs e)
         {
-            groupBoxGraph.Visible = false;
-            buttonGraphReset.Visible = true;
-            buttonIntg.Visible = true;
-            chart1.Visible = true;
-            buttonIntg.Visible = true;
-            buttonScaleDown.Visible = true;
-            buttonScaleUp.Visible = true;
-            buttonDown.Visible = true;
-            buttonUp.Visible = true;
-
             expressionParser = new ExpressionParser(txBxInput.Text);
             try 
             { 
@@ -131,9 +122,20 @@ namespace formCalc
                 MessageBox.Show("Некорректный ввод!");
                 return;
             };
-            chrt = new graph(double.Parse(txBxXmin.Text), double.Parse(txBxXmax.Text), double.Parse(txBxStep.Text), 
+            groupBoxGraph.Visible = false;
+            groupBoxIntg.Visible = true;
+            buttonGraphReset.Visible = true;
+            buttonIntg.Visible = true;
+            chart1.Visible = true;
+            buttonIntg.Visible = true;
+            buttonScaleDown.Visible = true;
+            buttonScaleUp.Visible = true;
+            buttonDown.Visible = true;
+            buttonUp.Visible = true;
+            chrt = new graph(double.Parse(txBxXmin.Text), double.Parse(txBxXmax.Text), double.Parse(txBxStep.Text),
                 txBxInput.Text, expressionParser.CalcAt);
             chrt.graphCreate(ref chart1);
+
         }
 
         private void buttonGraphReset_Click(object sender, EventArgs e)
@@ -146,7 +148,7 @@ namespace formCalc
             buttonDown.Visible = false;
             buttonUp.Visible = false;
             buttonGraphReset.Visible = false;
-
+            groupBoxIntg.Visible = false;
         }
 
         private void txBxXmin_TextChanged(object sender, EventArgs e)
@@ -195,6 +197,12 @@ namespace formCalc
             };
             txBxInput.Text = expressionParser.CalcAt(0).ToString();
         }
+
+        private void buttonIntg_Click(object sender, EventArgs e) 
+        { 
+            MessageBox.Show(txBxStartIntg.Text == String.Empty || txBxEndIntg.Text == String.Empty ? "Некорректный ввод!" : Ariphmetics.Integrate(expressionParser.CalcAt, double.Parse(txBxStartIntg.Text), double.Parse(txBxEndIntg.Text), 100).ToString()); 
+        }
+
     }
     partial class graph
     {
