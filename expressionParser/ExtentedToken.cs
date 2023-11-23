@@ -146,6 +146,7 @@ namespace StringParser
             performer.Parse();
             return new ExtentedToken((x) => performer.CalcAt(x));
         }
+
         /// <summary>
         /// Превращает последовательность токенов в массив расширенных токенов
         /// </summary>
@@ -188,33 +189,7 @@ namespace StringParser
                     if (tokens[i].Type == Token.TYPE.FUNCTION || tokens[i].Type == Token.TYPE.UNARY_OPERATOR)
                     {
                         // Парсинг внутренней
-                        do
-                        {
-                            if (i < tokens.Length - 1)
-                                i++;
-                            else
-                                break;
-                            if (tokens[i].Type == Token.TYPE.L_BRACE)
-                            {
-                                level++;
-                                operatorList.Add(tokens[i]);
-                            }
-                            if (tokens[i].Type == Token.TYPE.R_BRACE)
-                            {
-                                level--;
-                                operatorList.Add(tokens[i]);
-                            }
-                            if (tokens[i].Type == Token.TYPE.UNARY_OPERATOR ||
-                                tokens[i].Type == Token.TYPE.FUNCTION ||
-                                tokens[i].Type == Token.TYPE.INT_NUM ||
-                                tokens[i].Type == Token.TYPE.VARIABLE ||
-                                tokens[i].Type == Token.TYPE.FLOAT_NUM)
-                            {
-                                operatorList.Add(tokens[i]);
-                            }
-                            if (level == targetLevel)
-                                break;
-                        } while (true);
+                        ParseInner(ref i, tokens, ref level, targetLevel, operatorList);
                     }
 
                     Token[] opList = new Token[operatorList.Count];
@@ -230,6 +205,38 @@ namespace StringParser
             return operators.ToArray();
 
         }
+        private static void ParseInner(ref int i, Token[] tokens, ref int level, 
+            int targetLevel, List<Token> operatorList)
+        {
+            do
+            {
+                if (i < tokens.Length - 1)
+                    i++;
+                else
+                    break;
+                if (tokens[i].Type == Token.TYPE.L_BRACE)
+                {
+                    level++;
+                    operatorList.Add(tokens[i]);
+                }
+                if (tokens[i].Type == Token.TYPE.R_BRACE)
+                {
+                    level--;
+                    operatorList.Add(tokens[i]);
+                }
+                if (tokens[i].Type == Token.TYPE.UNARY_OPERATOR ||
+                    tokens[i].Type == Token.TYPE.FUNCTION ||
+                    tokens[i].Type == Token.TYPE.INT_NUM ||
+                    tokens[i].Type == Token.TYPE.VARIABLE ||
+                    tokens[i].Type == Token.TYPE.FLOAT_NUM)
+                {
+                    operatorList.Add(tokens[i]);
+                }
+                if (level == targetLevel)
+                    break;
+            } while (true);
+        }
+
         /// <summary>
         /// Превращает строку в последовательность токенов
         /// </summary>
@@ -247,6 +254,7 @@ namespace StringParser
         /// <param name="origin">Внутренний токен</param>
         /// <param name="child">Внешний токен, в который в качестве аргумента передается внешний</param>
         /// <returns>Токен, объединивший внутренний и внешний</returns>
+        
         public static ExtentedToken Merge(ExtentedToken origin, ExtentedToken child)
         {
             return new ExtentedToken((x) => child.Val(origin.Val(x)));

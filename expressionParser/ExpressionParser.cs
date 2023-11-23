@@ -46,6 +46,7 @@ namespace StringParser
         {
             return _function.Val(x);
         }
+
         /// <summary>
         /// Функция для рекурсивного парсинга последовательности токенов
         /// </summary>
