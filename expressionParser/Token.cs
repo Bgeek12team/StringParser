@@ -185,6 +185,11 @@ namespace StringParser
         /// </returns>
         private static bool TryParseToken(string str, out Token token)
         {
+            if (str == "Γ")
+            {
+                token = new Token("gamma", TYPE.FUNCTION);
+                return true;
+            }
             str = str.Trim().ToLower();
             if (int.TryParse(str, out int res))
             {
@@ -260,7 +265,6 @@ namespace StringParser
                 case "pi":
                     token = new Token(Math.PI.ToString(), TYPE.FLOAT_NUM);
                     return true;
-                case "Γ":
                 case "gamma":
                     token = new Token("gamma", TYPE.FUNCTION);
                     return true;

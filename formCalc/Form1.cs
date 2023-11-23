@@ -55,7 +55,7 @@ namespace formCalc
                     case "Func":
                         button.Click += (sender, e) => buttonFuncEvent(); break;
                     default:
-                        button.Click += (sender, e) => txBxInput.Text += (operButtons.Contains(button.Text) ? $" {button.Text.ToLower()} " : button.Text.ToLower()); break;
+                        button.Click += (sender, e) => txBxInput.Text += (operButtons.Contains(button.Text) ? $" {button.Text} " : button.Text); break;
                 }
             }
 
@@ -134,7 +134,7 @@ namespace formCalc
             buttonUp.Visible = true;
             chrt = new graph(double.Parse(txBxXmin.Text), double.Parse(txBxXmax.Text), double.Parse(txBxStep.Text),
                 txBxInput.Text, expressionParser.CalcAt);
-            chrt.graphCreate(ref chart1);
+            chrt.graphCreate(chart1);
 
         }
 
@@ -202,7 +202,6 @@ namespace formCalc
         { 
             MessageBox.Show(txBxStartIntg.Text == String.Empty || txBxEndIntg.Text == String.Empty ? "Некорректный ввод!" : Ariphmetics.Integrate(expressionParser.CalcAt, double.Parse(txBxStartIntg.Text), double.Parse(txBxEndIntg.Text), 100).ToString()); 
         }
-
     }
     partial class graph
     {
@@ -223,18 +222,9 @@ namespace formCalc
             this.function = function;
         }
 
-        public void graphCreate(ref Chart chrt)
+        public void graphCreate(Chart chrt)
         {
-            double x = xmin;
-            chrt.Series.Clear();
-            chrt.Series.Add(func);
-            chrt.Series[0].ChartType = SeriesChartType.Spline;
-            chrt.Series[0].BorderWidth = 3;
-            while (x <= xmax)
-            {
-                chrt.Series[0].Points.AddXY(x, function(x));
-                x += step;
-            }
+            graphReplace(chrt, 0,0);
         }
         public void graphOfSetLeft(Chart chrt)
         {
@@ -256,13 +246,25 @@ namespace formCalc
         {
             xmin -= scaleXmin;
             xmax -= scaleXmax;
+            double value;
             double x = xmin;
             chrt.Series[0].Points.Clear();
             while (x <= xmax)
             {
-                chrt.Series[0].Points.AddXY(x, function(x));
+                try
+                {
+                    value = function(x) != double.PositiveInfinity ? function(x) : throw new Exception();
+                }
+                catch (Exception)
+                {
+                    x += step;
+                    continue;
+                }
+                chrt.Series[0].Points.AddXY(x, Math.Round(value, 8));
                 x += step;
             }
+            
+            
         }
     }
 }
