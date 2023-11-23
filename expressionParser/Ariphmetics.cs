@@ -27,14 +27,14 @@ namespace StringParser
             double stepSize = (end - start) / numSteps;
             double result = 0.0;
 
-            for (int i = 0; i < numSteps; i++)
+            Parallel.For(0, numSteps, i =>
             {
                 double x0 = start + i * stepSize;
                 double x1 = start + (i + 1) * stepSize;
                 double xMid = (x0 + x1) / 2.0;
 
                 result += stepSize / 6 * (f(x0) + 4 * f(xMid) + f(x1));
-            }
+            });
 
             return result;
         }
@@ -56,9 +56,28 @@ namespace StringParser
         /// </summary>
         /// <param name="a">Данное числа</param>
         /// <returns>Значение дзета-функции данного числа</returns>
-        public static double Zeta(double a)
+        public static double Zeta(double s)
         {
-            return a;
+            double result = 0;
+            double precision = 0.000001;
+            long n = 1;
+            if (s > 1)
+            {
+                while (true)
+                {
+                    double temp = 1 / Math.Pow(n, s);
+                    result += temp;
+
+                    if (temp <= precision)
+                        break;
+                    n++;
+                }
+            }
+            else
+            {
+                return double.PositiveInfinity;
+            }
+            return result;
         }
 
         /// Метод, находящий количество простых чисел, меньших либо равных
