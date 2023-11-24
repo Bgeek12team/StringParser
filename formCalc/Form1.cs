@@ -162,8 +162,10 @@ namespace formCalc
         }
         private double calcStep()
         {
-            return 
-                double.TryParse(txBxXmax.Text, out double tValue) && double.TryParse(txBxXmax.Text, out double tValue2) ? (double.Parse(txBxXmax.Text) - double.Parse(txBxXmin.Text)) / 200 : 0;
+            double step = 
+                double.TryParse(txBxXmax.Text, out double tValue) && double.TryParse(txBxXmin.Text, out double tValue2) ? (double.Parse(txBxXmax.Text) - double.Parse(txBxXmin.Text)) / 200 : 0;
+            chrt.Step = step;
+            return step;
         }
 
         private void buttonDown_Click(object sender, EventArgs e)
@@ -206,7 +208,27 @@ namespace formCalc
 
         private void buttonAboutProgramm_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Данная программа позволяюет вычислять различные значения функций\nСтрокить графики\nИ сосать хуи)");
+            MessageBox.Show(
+                "Данная программа разработана студентами группы Б.ПИН.РИС.2206 для обработки математических выражений," +
+                "состоящих из произвольной последовательности сложных математических функций различной степени вложенности," +
+                "бинарных операторов, унарных минусов, математических констант и скобок,5" +
+                "а также построения их графиков. \nТребования к записи выражения:\n" +
+                "1. Аргументы функции должны быть заключены в скорбки\n" +
+                "2. Каждой открытой скобке должна соответсвовать одна закрытая скобка, и наоборот.\n" +
+                "3. Для избежания неоднозначного толкования значений бинарных операторов рекомендуется " +
+                "заключать сложные операнды в скобки.\n" +
+                "4. Для построения графика доступна только переменная x.\n" +
+                "5. При использовании переменной в режиме калькулятора её значение будет принято за 0.\n" +
+                "6. Допускается использование только функций и операторов, которые находятся на форме.\n" +
+                "однако существуют альтернативные записи для:\n" +
+                "гамма-функции - gamma(x) \n" +
+                "квадратного корня - sqrt(x) \n" +
+                "дзета-функции - zeta(x) \n" +
+                "константы пи - pi. \n" +
+                "7. Десятичные дроби разделяются точкой.\n" +
+                "При несоблюдении вышеописанных требований точность результата и его наличие НЕ гарантируется.\n" +
+                "При попытке построить график в точках, где функция не определена либо уходит за пределы [-10^27: 10^27], " +
+                "такие точки отображены не будут.");
         }
     }
     partial class graph
@@ -214,9 +236,12 @@ namespace formCalc
         private double xmin;
         private double xmax;
         private double step;
+        public double Step { get; set; }
+
         private string func;
         private double scale;
         private Func<double, double> function;
+        private int steps;
 
         public graph(double xmin, double xmax, double step, string func, Func<double, double> function)
         {
@@ -226,6 +251,7 @@ namespace formCalc
             this.func = func;
             scale = Math.Abs((xmax - xmin) / 20);
             this.function = function;
+            this.steps = (int)((xmax - xmin) / step);
         }
 
         public void graphCreate(Chart chrt)
@@ -252,32 +278,30 @@ namespace formCalc
         {
             xmin -= scaleXmin;
             xmax -= scaleXmax;
+            step = (xmax - xmin) / steps;
             double value;
             double x = xmin;
             chrt.Series[0].Points.Clear();
-            double[] values = new double[(int)((xmax - xmin) / step) + 1];
-
-            Parallel.Invoke(
-                () =>
+            int range = (int)((xmax - xmin) / step) + 1;
+            if (range < 0)
+                return;
+            double[] values = new double[range];
+            Parallel.For(0, range, i =>
+            {
+                try
                 {
-                    while (x <= xmax)
-                    {
-                        try
-                        {
-                            double res = function(x);
-                            value = !double.IsInfinity(res) ? res : throw new Exception();
-                        }
-                        catch (Exception)
-                        {
-                            x += step;
-                            continue;
-                        }
-                        chrt.Series[0].Points.AddXY(x, Math.Round(value, 8));
-                        x += step;
-                    }
+                    double res = function(xmin + i*step);
+                    value = !double.IsInfinity(res) ? res : throw new Exception();
+                    values[i] = value;
                 }
-                
-                );
+                catch (Exception){ }
+            });
+
+            for(int i = 0; i < range; i++)
+            {
+                if (values[i] < 1E+27 && values[i] > -1E+27)
+                    chrt.Series[0].Points.AddXY(xmin + i * step, values[i]);
+            }
             /*
             while (x <= xmax)
             {
