@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "formCalc", "formCalc\formCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "expressionParser", "expressionParser\expressionParser.csproj", "{FF0D632D-C1DE-45D3-940C-00AC542535D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserTests", "ParserTests\ParserTests.csproj", "{971ABB2B-55CC-4A11-9CF6-396C7B02530C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FF0D632D-C1DE-45D3-940C-00AC542535D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF0D632D-C1DE-45D3-940C-00AC542535D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF0D632D-C1DE-45D3-940C-00AC542535D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971ABB2B-55CC-4A11-9CF6-396C7B02530C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971ABB2B-55CC-4A11-9CF6-396C7B02530C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971ABB2B-55CC-4A11-9CF6-396C7B02530C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971ABB2B-55CC-4A11-9CF6-396C7B02530C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
