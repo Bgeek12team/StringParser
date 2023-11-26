@@ -28,7 +28,7 @@ namespace StringParser
             this._parsableString = s;
         }
         /// <summary>
-        /// Функция, обрабатывающая строку, созадющая из строки
+        /// Функция, обрабатывающая строку, создающая из строки
         /// выражение, значение которого можно вычислить
         /// </summary>
         public void Parse()
@@ -38,7 +38,7 @@ namespace StringParser
             _function = ExtentedToken.ConvertFromExpression(resTokens);
         }
         /// <summary>
-        /// Функция, считающее значение обработанного выражения при данном х
+        /// Функция, считающая значение обработанного выражения при данном х
         /// </summary>
         /// <param name="x">Значение переменной х</param>
         /// <returns>Значение обработанного выражения при данном х</returns>
