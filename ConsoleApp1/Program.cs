@@ -13,6 +13,8 @@ namespace P
             Console.WriteLine(ex.CalcAt(1));
             Console.WriteLine(ex.CalcAt(2));
             Console.WriteLine(ex.CalcAt(3));
+
+            Console.WriteLine(Ariphmetics.Integrate(x => Math.Pow(Math.Tan(x), 2), 1, 10, 1000000));
         }
         public void getMark()
         {
