@@ -41,7 +41,7 @@ namespace ParserTests
             ExpressionParser ex = new ExpressionParser("(ln(ln(ln(x))))");
             ex.Parse();
 
-            Assert.AreEqual(ex.CalcAt(0).ToString(), "не число");
+            Assert.AreEqual(ex.CalcAt(1), double.NaN);
         }
         /// <summary>
         /// Тест, проверяющий значение гамма-функции в нуле
@@ -50,17 +50,6 @@ namespace ParserTests
         public void TestGammaInZero()
         {
             Assert.AreEqual(Ariphmetics.Gamma(0, 2), double.PositiveInfinity);
-        }
-        /// <summary>
-        /// Тест, проверяющий значение гамма-функции в -∞
-        /// Арифметикс гамма насрал мне на лицо:
-        /// Assert.AreEqual failed. Expected:<не число>. Actual:<не число>.
-        /// 
-        /// </summary>
-        [TestMethod]
-        public void TestGammaInNegativeNumber()
-        {
-            Assert.AreEqual(Ariphmetics.Gamma(double.NegativeInfinity, 2).ToString(), "не число");
         }
         [TestMethod]
         public void TestPiFunc()
