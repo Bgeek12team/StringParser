@@ -27,14 +27,14 @@ namespace StringParser
             double stepSize = (end - start) / numSteps;
             double result = 0.0;
 
-            Parallel.For(0, numSteps, i =>
+            for (int i = 0; i < numSteps; i++)
             {
                 double x0 = start + i * stepSize;
                 double x1 = start + (i + 1) * stepSize;
                 double xMid = (x0 + x1) / 2.0;
 
                 result += stepSize / 6 * (f(x0) + 4 * f(xMid) + f(x1));
-            });
+            }
 
             return result;
         }
